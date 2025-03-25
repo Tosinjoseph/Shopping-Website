@@ -1,10 +1,19 @@
 import React, { useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import Modal from '../components/Modal.jsx'
+import ChangeAddress from '../components/ChangeAddress.jsx'
+import { decreaseQuantity, increaseQuantity, removeFromCart } from '../redux/cartSlice.jsx'
+import { Navigate, useNavigate } from 'react-router-dom'
+
+
 
 const Cart = () => {
     const cart =useSelector(state=>state.cart)
     const[address, setAddress] = useState('Alekuwodo, Osogbo, osun st.')
+    const[isModalOpen, setIsModalOpen] = useState(false)
+    const dispatch = useDispatch()
+    const Navigate = useNavigate()
   return (
     <div className='container mx-auto py-8 min-h-96 px-4 md:px-16 lg:px-24'>
          {cart.products.length > 0 ?
@@ -33,12 +42,13 @@ const Cart = () => {
                      <div className='flex space-x-12 items-center'>
                       <p>${product.price}</p>
                       <div className='flex items-center justify-center border'>
-                        <button className='text-xl font-bold border-r px-1.5'>-</button>
+                        <button className='text-xl font-bold border-r px-1.5' onClick={()=>dispatch(decreaseQuantity(product.id))}>-</button>
                         <p className='text-xl px-2'>{product.quantity}</p>
-                        <button className='text-xl px-1 border-l'>+</button>
+                        <button className='text-xl px-1 border-l' onClick={()=>dispatch(increaseQuantity(product.id))}>+</button>
                       </div>
                       <p>${(product.quantity * product.price).toFixed(2)}</p>
-                      <button className='text-red-500 hover:text-red-700 cursor-pointer'>
+                      <button className='text-red-500 hover:text-red-700 cursor-pointer'
+                       onClick={()=>dispatch(removeFromCart(product.id))}>
                         <FaTrashAlt/>
                       </button>
                      </div>
@@ -56,15 +66,18 @@ const Cart = () => {
                 <p>Shipping:</p>
                 <p className='ml-2'>shipping to {""}</p>
                 <span className='text-xs font-bold'>{address}</span>
-                <button className='text-blue-500 hover:underline mt-1 ml-2'>Change Address</button>
+                <button onClick={()=>setIsModalOpen(true)} className='text-blue-500 hover:underline mt-1 ml-2'>Change Address</button>
               </div>
               <div className='flex mb-4 justify-between '>
                 <span>Total price</span>
                 <span>{cart.totalPrice.toFixed(2)}</span>
               </div>
-              <button className='w-full bg-red-600 text-white py-2 hover:bg-red-800'>Proceed to checkout</button>
+              <button className='w-full bg-red-600 text-white py-2 hover:bg-red-800' onClick={()=>Navigate('/checkout')}>Proceed to checkout</button>
             </div>
            </div>
+           <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
+            <ChangeAddress setIsModalOpen={setIsModalOpen} setAddress={setAddress} isModalOpen={isModalOpen}/>
+            </Modal>
           </div> : 
           <div className='flex justify-center'>
             <img src="./emptycart.png" alt="" className='h-96'/>
