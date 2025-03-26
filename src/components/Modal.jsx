@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Modal = ({isModalOpen, setIsModalOpen,children}) => {
+const Modal = ({isModalOpen, setIsModalOpen,children, isModelOpen, setIsModelOpen}) => {
   if(!isModalOpen) return null;
   return (
     <div className='fixed inset-0 bg-gray-800 opacity-75 flex items-center justify-center z-50'>

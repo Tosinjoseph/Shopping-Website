@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Login = () => {
+const Login = ({setIsModelOpen}) => {
   return (
     <div>
         <h2 className='text-2xl font-bold mb-4'>Login</h2>
