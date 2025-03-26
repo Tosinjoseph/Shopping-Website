@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
-const Checkout = () => {
+const Checkout = ({setOrder}) => {
     const[billingToggle, setBillingToggle] =useState(false)
     const[shippingToggle, setShippingToggle] =useState(false)
     const[paymentToggle, setPaymentToggle] =useState(false)
     const[paymentMethod, setPaymentMethod] = useState('cod')
+    const navigate = useNavigate()
     const[shippingInfo, setShippingInfo] = useState({
         address: '',
         city: '',
@@ -21,6 +23,16 @@ const Checkout = () => {
     }
     const togglePayment =()=>{
         paymentToggle? setPaymentToggle(false) : setPaymentToggle(true)
+    }
+    const handleOrder =()=>{
+        const newOrder = {
+         products: cart.products,
+         orderNumber: '1234',
+         shippingInformation: shippingInfo,
+         totalPrice: cart.totalPrice
+        }
+        setOrder(newOrder)
+        navigate('/order-confirmation')
     }
   return (
     <div className='container mx-auto py-8 min-h-96 px-4 md:px-16 lg:px-24'>
@@ -109,7 +121,7 @@ const Checkout = () => {
                         </div>
                         <div>
                             <label htmlFor="" className='block text-gray-700 font-semibold mb-2'>CVV</label>
-                            <input type="text" className='bg-white p-2 w-full rounded' required/>
+                            <input type="text" placeholder='CVV' className='bg-white p-2 w-full rounded' required/>
                         </div>
                     </div>
                 </div>
@@ -142,7 +154,7 @@ const Checkout = () => {
                         <span className='font-semibold'>${cart.totalPrice.toFixed(2)}</span>
                     </div>
                 </div>
-                <button className='w-full bg-red-600 text-white cursor-pointer py-2 mt-6 hover:bg-red-800'>Place Order Now</button>
+                <button onClick={handleOrder} className='w-full bg-red-600 text-white cursor-pointer py-2 mt-6 hover:bg-red-800'>Place Order Now</button>
             </div>
         </div>
               
