@@ -7,6 +7,8 @@ import Cart from "./pages/Cart.jsx"
 import Checkout from "./pages/Checkout.jsx"
 import { useState } from "react"
 import Order from "./pages/Order.jsx"
+import FilterData from "./pages/FilterData.jsx"
+import ProductDetail from "./pages/ProductDetail.jsx"
 
 
 function App() {
@@ -21,6 +23,8 @@ function App() {
         <Route path='/cart' element={<Cart/>}></Route>
         <Route path='/checkout' element={<Checkout setOrder={setOrder}/>}></Route>
         <Route path='/order-confirmation' element={<Order order={order}/>}></Route>
+        <Route path='/filter-data' element={<FilterData/>}></Route>
+        <Route path='/product/:id' element={<ProductDetail/>}></Route>
       </Routes>
       <Footer/>
     </BrowserRouter>
